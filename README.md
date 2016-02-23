@@ -47,6 +47,8 @@ An array of features used by your app. Valid values (derived from the Kangax ES6
 	es6_const
 	es6_let
 	es6_arrow_functions
+	es6_object_literal_extensions (since v0.9.1)
+	es6_template_strings (since v0.9.1)
 
 The following values are valid, but not implemented in v0.9 (requires babel support for each feature)
 
@@ -54,10 +56,8 @@ The following values are valid, but not implemented in v0.9 (requires babel supp
 	es6_default_function_parameters
 	es6_rest_parameters
 	es6_spread_operator
-	es6_object_literal_extensions
 	es6_for_of_loops
 	es6_octal_and_binary_literals
-	es6_template_strings
 	es6_RegExp_y_and_u_flags
 	es6_destructuring_declarations
 	es6_destructuring_assignment

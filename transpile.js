@@ -21,9 +21,11 @@ require('./kangax/data-esnext.js').tests.forEach(function(test) { return feature
 
 // Map babel transforms to kangax names
 var kangaxToBabel = {
-    es6_arrow_functions:'babel-plugin-transform-es2015-arrow-functions', 
-    es6_const:'babel-plugin-transform-es2015-block-scoping',
-    es6_let:'babel-plugin-transform-es2015-block-scoping'
+    es6_arrow_functions:['babel-plugin-transform-es2015-arrow-functions'], 
+    es6_const:['babel-plugin-transform-es2015-block-scoping'],
+    es6_let:['babel-plugin-transform-es2015-block-scoping'],
+    es6_object_literal_extensions:['babel-plugin-transform-es2015-computed-properties','babel-plugin-transform-es2015-literals','babel-plugin-transform-es2015-shorthand-properties'],
+    es6_template_strings:['babel-plugin-transform-es2015-template-literals']
 } ;
 
 var nodentPlugins = {
@@ -59,7 +61,7 @@ function createHandler(opts) {
         if (!req.url.match(match)) return next();
 
         var ua = uaParser(req.headers['user-agent']);
-        var key = [req.url, ua.ua.family, ua.ua.major, ua.ua.minor].join('|');
+        var key = [req.url, ua.ua.family, ua.ua.major].join('||');
 
         if (enableCache === true && key in transforms) {
             res.write(transforms[key]);
@@ -74,10 +76,13 @@ function createHandler(opts) {
                 opts.features.forEach(feature => {
                     if (nodentPlugins[feature])
                         useNodent = true ;
-                    if (features[feature] && !features[feature](ua.ua)) {
-                        if (kangaxToBabel[feature])
-                            babelPlugins[kangaxToBabel[feature]] = _try(require,ex=>console.error("Feature "+feature+": "+ex))(kangaxToBabel[feature]) ;
-                    }
+                    else if (features[feature]) {
+                        if (kangaxToBabel[feature] && !features[feature](ua.ua)) {
+                            kangaxToBabel[feature].forEach(function(plugin){
+                                babelPlugins[plugin] = _try(require,ex=>console.error("Feature "+feature+": "+ex))(plugin) ;
+                            }) ;
+                        }
+                    } else console.error("Unknown feature "+feature) ;
                 }) ;
                 
                 if (useNodent) {
@@ -87,7 +92,7 @@ function createHandler(opts) {
                         args: (req,code) => [code, req.url, { promises: true }],
                         outputProperty: 'code' }) ;
                 }
-                
+
                 babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
                 if (babelPlugins.length) {
                     var babel = require('babel-core');
