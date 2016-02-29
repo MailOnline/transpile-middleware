@@ -10,7 +10,7 @@ Installation
 
 How it works
 =====
-transpile-middleware compiles and caches your source JavaScript using [Nodent](http://nodent.mailed.me.uk) and/or [Babel](http://babeljs.io) as it is requested by browsers. It checks the compatibility of the browser and only transpiles features not implemented by the browser, allowing the native implementations to take over where possible. 
+transpile-middleware compiles and caches your source JavaScript using [Nodent](http://nodent.mailed.me.uk) and/or [Babel](http://babeljs.io) as it is requested by browsers. It checks the compatibility of the browser and only transpiles features not implemented by the browser, allowing the native implementations to take over where possible.
 
 You need to specify which ES6/7/Next features your app uses (in the browser) so transpile-middleware can do the minimum work necessary. For each feature you specify you _may_ need to install a babel transform or other module. transpile-middleware doesn't install anything by default except babel-core to keep installation as light as possible. If a module is missing, transpile-middleware will print a message to console.error() showing you what is missing.
 
@@ -49,6 +49,9 @@ An array of features used by your app. Valid values (derived from the Kangax ES6
 	es6_arrow_functions
 	es6_object_literal_extensions (since v0.9.1)
 	es6_template_strings (since v0.9.1)
+	es6_destructuring_declarations (since v0.9.2)
+	es6_destructuring_assignment (since v0.9.2)
+	es6_destructuring_parameters (since v0.9.2)
 
 The following values are valid, but not implemented in v0.9 (requires babel support for each feature)
 
@@ -59,9 +62,6 @@ The following values are valid, but not implemented in v0.9 (requires babel supp
 	es6_for_of_loops
 	es6_octal_and_binary_literals
 	es6_RegExp_y_and_u_flags
-	es6_destructuring_declarations
-	es6_destructuring_assignment
-	es6_destructuring_parameters
 	es6_Unicode_code_point_escapes
 	es6_new_target
 	es6_block_level_function_declaration
@@ -141,4 +141,3 @@ The following values are valid, but not implemented in v0.9 (requires babel supp
 	esnext_Error_isError
 	esnext_Math_methods_for_64_bit_integers
 	esnext_Reflect_Realm
-

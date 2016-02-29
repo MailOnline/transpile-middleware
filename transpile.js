@@ -21,11 +21,14 @@ require('./kangax/data-esnext.js').tests.forEach(function(test) { return feature
 
 // Map babel transforms to kangax names
 var kangaxToBabel = {
-    es6_arrow_functions:['babel-plugin-transform-es2015-arrow-functions'], 
+    es6_arrow_functions:['babel-plugin-transform-es2015-arrow-functions'],
     es6_const:['babel-plugin-transform-es2015-block-scoping'],
     es6_let:['babel-plugin-transform-es2015-block-scoping'],
     es6_object_literal_extensions:['babel-plugin-transform-es2015-computed-properties','babel-plugin-transform-es2015-literals','babel-plugin-transform-es2015-shorthand-properties'],
-    es6_template_strings:['babel-plugin-transform-es2015-template-literals']
+    es6_template_strings:['babel-plugin-transform-es2015-template-literals'],
+    es6_destructuring_declarations:['babel-plugin-transform-es2015-destructuring'],
+    es6_destructuring_assignment:['babel-plugin-transform-es2015-destructuring'],
+    es6_destructuring_parameters:['babel-plugin-transform-es2015-destructuring']
 } ;
 
 var nodentPlugins = {
@@ -50,13 +53,13 @@ function _try(fn,error) {
 function createHandler(opts) {
     if (!Array.isArray(opts.features))
         return function(_0,_1,next) { next(); } ;
-        
+
     var enableCache = ('enableCache' in opts)?opts.enableCache:true ;
     var match = opts.match;
     if (!match) match = /\.js$/;
 
     var uaParser = require('./lib/ua');
-    
+
     return function transformReqHandler(req, res, next) {
         if (!req.url.match(match)) return next();
 
@@ -84,11 +87,11 @@ function createHandler(opts) {
                         }
                     } else console.error("Unknown feature "+feature) ;
                 }) ;
-                
+
                 if (useNodent) {
-                    transpilers.push({ 
-                        compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(), 
-                        method: 'compile', 
+                    transpilers.push({
+                        compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
+                        method: 'compile',
                         args: (req,code) => [code, req.url, { promises: true }],
                         outputProperty: 'code' }) ;
                 }
@@ -96,10 +99,10 @@ function createHandler(opts) {
                 babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
                 if (babelPlugins.length) {
                     var babel = require('babel-core');
-                    transpilers.push({ 
-                        compiler: babel, method: 'transform', 
+                    transpilers.push({
+                        compiler: babel, method: 'transform',
                         args: (req,code) => [code, { plugins: babelPlugins }],
-                        outputProperty: 'code' 
+                        outputProperty: 'code'
                     }) ;
                 }
 
