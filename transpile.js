@@ -56,6 +56,7 @@ function createHandler(opts) {
 
     var enableCache = ('enableCache' in opts)?opts.enableCache:true ;
     var match = opts.match;
+    var sourcemap = opts.sourcemap || false;
     if (!match) match = /\.js$/;
 
     var uaParser = require('./lib/ua');
@@ -92,7 +93,7 @@ function createHandler(opts) {
                     transpilers.push({
                         compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
                         method: 'compile',
-                        args: (req,code) => [code, req.url, { promises: true }],
+                        args: (req,code) => [code, req.url, { promises: true, sourcemap: sourcemap }],
                         outputProperty: 'code' }) ;
                 }
 
