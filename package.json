@@ -1,6 +1,6 @@
 {
   "name": "transpile-middleware",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {

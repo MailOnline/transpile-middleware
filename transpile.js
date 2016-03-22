@@ -11,7 +11,7 @@ function makeTest(test){
             for (var n=ua.major;n>=0;n--) {
                 var uaVer = uaID+(n?n:"") ;
                 if (uaVer in subtest.res)
-                    return !!subtest.res[uaVer] ;
+                    return subtest.res[uaVer]==true ;
             }
         })?test:false;
     }
