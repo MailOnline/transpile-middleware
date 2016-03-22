@@ -25,7 +25,7 @@ var kangaxToBabel = {
     es6_const:['babel-plugin-transform-es2015-block-scoping'],
     es6_let:['babel-plugin-transform-es2015-block-scoping'],
     es6_object_literal_extensions:['babel-plugin-transform-es2015-computed-properties','babel-plugin-transform-es2015-literals','babel-plugin-transform-es2015-shorthand-properties'],
-    es6_template_strings:['babel-plugin-transform-es2015-template-literals'],
+    es6_template_literals:['babel-plugin-transform-es2015-template-literals'],
     es6_destructuring_declarations:['babel-plugin-transform-es2015-destructuring'],
     es6_destructuring_assignment:['babel-plugin-transform-es2015-destructuring'],
     es6_destructuring_parameters:['babel-plugin-transform-es2015-destructuring']
@@ -36,6 +36,10 @@ var nodentPlugins = {
     async_throw:true,
     await_anywhere:true
 } ;
+
+var aliases = {
+    es6_template_strings:'es6_template_literals'
+};
 
 var transforms = {};
 
@@ -78,6 +82,8 @@ function createHandler(opts) {
                 var babelPlugins = {} ;
                 var useNodent = false ;
                 opts.features.forEach(feature => {
+                    if (aliases[feature])
+                        feature = aliases[feature] ;
                     if (nodentPlugins[feature])
                         useNodent = true ;
                     else if (features[feature]) {
@@ -90,11 +96,15 @@ function createHandler(opts) {
                 }) ;
 
                 if (useNodent) {
-                    transpilers.push({
+                    var nodent = {
                         compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
                         method: 'compile',
                         args: (req,code) => [code, req.url, { promises: true, sourcemap: sourcemap }],
-                        outputProperty: 'code' }) ;
+                        outputProperty: 'code' } ;
+                    if (!nodent.compiler.version || nodent.compiler.version<"2")
+                        console.log("Nodent version must be >2.4.0") ;
+                    else
+                        transpilers.push(nodent) ;
                 }
 
                 babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
@@ -121,12 +131,13 @@ function createHandler(opts) {
                 res.write(result);
                 res.end();
             } catch (ex) {
-                res.status(500).send("Error occurred whilst running transforms: "+ex.message);
+                res.status(500).send("Error occurred whilst running transforms: "+ex.message+"\n"+ex.stack);
             }
         }
     };
 }
 
 module.exports = {
-    createHandler
+    createHandler:createHandler,
+    features:Object.keys(kangaxToBabel).concat(Object.keys(nodentPlugins)).concat(Object.keys(aliases))
 };
