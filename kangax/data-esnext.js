@@ -4,6 +4,7 @@ exports.name = 'ES Next';
 exports.target_file = 'esnext/index.html';
 exports.skeleton_file = 'esnext/skeleton.html';
 
+var temp = {};
 var flag = "flagged";
 /* jshint unused:false */
 var very = "very";
@@ -20,7 +21,19 @@ var typescript = {
         val: fallthrough,
         note_id: "typescript-es6",
         note_html: "TypeScript's compiler will accept code using this feature if the <code>--target ES6</code> flag is set, but passes it through unmodified and does not supply a runtime polyfill."
-    }
+    },
+    asyncawait: {
+        val: true,
+        note_id: "typescript-async-await",
+        note_html: "TypeScript <code>async</code> / <code>await</code> requires native generators support."
+    },
+};
+var firefox = {
+  nightly: {
+    val: false,
+    note_id: "firefox-nightly",
+    note_html: "The feature is enabled by default only in Firefox Nightly."
+  }
 };
 
 exports.browsers = {
@@ -30,11 +43,11 @@ exports.browsers = {
     platformtype: 'compiler',
   },
   babel: {
-    full: 'Babel 6.5 + core-js 2.1',
+    full: 'Babel 6.5 + core-js 2.2',
     short: 'Babel +<br><nobr>core-js</nobr>',
     platformtype: 'compiler',
     note_id: 'experimental-flag',
-    note_html: 'Have to be enabled via --stage 0 flag'
+    note_html: 'Have to be enabled via <code>babel-preset-stage-0</code> preset'
   },
   jsx: {
     full: 'JSX',
@@ -43,7 +56,7 @@ exports.browsers = {
     platformtype: 'compiler',
   },
   typescript: {
-    full: 'TypeScript 1.7 + core-js 2.1',
+    full: 'TypeScript 1.8 + core-js 2.2',
     short: 'Type-<br />Script +<br /><nobr>core-js</nobr>',
     obsolete: false,
     platformtype: 'compiler'
@@ -52,6 +65,12 @@ exports.browsers = {
     full: 'es7-shim',
     short: 'es7-shim',
     platformtype: 'compiler',
+  },
+  ie10: {
+    full: 'Internet Explorer',
+    family: 'Chakra',
+    short: 'IE 10-',
+    obsolete: false,
   },
   ie11: {
     full: 'Internet Explorer',
@@ -73,6 +92,14 @@ exports.browsers = {
     note_id: 'edge-experimental-flag',
     note_html: 'Flagged features have to be enabled via "Enable experimental Javascript features" setting under about:flags'
   },
+  edge14: {
+    full: 'Microsoft Edge',
+    family: 'Chakra',
+    short: 'Edge 14',
+    unstable: true,
+    note_id: 'edge-experimental-flag',
+    note_html: 'Flagged features have to be enabled via "Enable experimental Javascript features" setting under about:flags'
+  },
   firefox31: {
     full: 'Firefox',
     short: 'FF 31',
@@ -91,6 +118,11 @@ exports.browsers = {
   firefox35: {
     full: 'Firefox',
     short: 'FF 35',
+    obsolete: true,
+  },
+  firefox36: {
+    full: 'Firefox',
+    short: 'FF 36',
     obsolete: true,
   },
   firefox39: {
@@ -116,10 +148,25 @@ exports.browsers = {
   firefox44: {
     full: 'Firefox',
     short: 'FF 44',
+    obsolete: true,
   },
   firefox45: {
     full: 'Firefox',
     short: 'FF 45',
+  },
+  firefox46: {
+    full: 'Firefox',
+    short: 'FF 46',
+    unstable: true,
+  },
+  firefox47: {
+    full: 'Firefox',
+    short: 'FF 47',
+    unstable: true,
+  },
+  firefox48: {
+    full: 'Firefox',
+    short: 'FF 48',
     unstable: true,
   },
   chrome30: {
@@ -216,19 +263,26 @@ exports.browsers = {
   chrome48: {
     full: 'Chrome',
     short: 'CH 48',
+    obsolete: true,
     note_id: 'experimental-flag',
     note_html: 'Have to be enabled via "Experimental Javascript features" flag'
   },
   chrome49: {
     full: 'Chrome',
     short: 'CH 49',
-    unstable: true,
     note_id: 'experimental-flag',
     note_html: 'Have to be enabled via "Experimental Javascript features" flag'
   },
   chrome50: {
     full: 'Chrome',
     short: 'CH 50',
+    unstable: true,
+    note_id: 'experimental-flag',
+    note_html: 'Have to be enabled via "Experimental Javascript features" flag'
+  },
+  chrome51: {
+    full: 'Chrome',
+    short: 'CH 51',
     unstable: true,
     note_id: 'experimental-flag',
     note_html: 'Have to be enabled via "Experimental Javascript features" flag'
@@ -309,6 +363,7 @@ exports.tests = [
         babel:       false,
         typescript:  true,
         edge13:      flag,
+        firefox48:   firefox.nightly,
       }
     },
     {
@@ -321,6 +376,7 @@ exports.tests = [
         babel:       true,
         typescript:  true,
         edge13:      flag,
+        firefox48:   firefox.nightly,
       }
     },
     {
@@ -415,7 +471,9 @@ exports.tests = [
     babel:      true,
     es7shim:    true,
     typescript: typescript.corejs,
-    firefox45:  false, // limited to nightly builds atm
+    firefox45:  firefox.nightly,
+    firefox46:  true,
+    chrome51:   flag,
   }
 },
 {
@@ -437,7 +495,9 @@ exports.tests = [
     babel:      true,
     es7shim:    true,
     typescript: typescript.corejs,
-    firefox45:  false, // limited to nightly builds atm
+    firefox45:  firefox.nightly,
+    firefox46:  true,
+    chrome51:   flag,
   }
 },
 {
@@ -461,6 +521,7 @@ exports.tests = [
         typescript:      typescript.corejs,
         webkit:          true,
         chrome47:        true,
+        edge14:          flag,	
         firefox42:       false,
         firefox43:       true,
       }
@@ -478,6 +539,7 @@ exports.tests = [
         babel:           true,
         typescript:      typescript.corejs,
         chrome47:        true,
+        edge14:          flag,	
         firefox42:       false,
         firefox43:       true,
       }
@@ -486,7 +548,7 @@ exports.tests = [
 },
 {
   name: 'trailing commas in function syntax',
-  link: 'https://github.com/tc39/tc39-notes/raw/master/es6/2014-09/trailing_comma_proposal.pdf',
+  link: 'https://jeffmo.github.io/es-trailing-function-commas/',
   category: 'candidate (stage 3)',
   significance: 'small',
   subtests: [
@@ -498,6 +560,7 @@ exports.tests = [
       res: {
         babel:       true,
         typescript:  true,
+        edge14:      true,
       }
     },
     {
@@ -508,6 +571,7 @@ exports.tests = [
       res: {
         babel:       true,
         typescript:  true,
+        edge14:      true,
       }
     },
   ],
@@ -528,6 +592,7 @@ exports.tests = [
       res: {
         tr:          true,
         babel:       true,
+        typescript:  typescript.asyncawait,
         edge13:      flag,
       }
     },
@@ -541,6 +606,7 @@ exports.tests = [
       res: {
         tr:          true,
         babel:       true,
+        typescript:  typescript.asyncawait,
         edge13:      flag,
       }
     },
@@ -552,6 +618,7 @@ exports.tests = [
       res: {
         tr:          true,
         babel:       true,
+        typescript:  false, // still buggy output
         edge13:      flag,
       }
     }
@@ -577,6 +644,7 @@ exports.tests = [
     babel:       true,
     es7shim:     true,
     typescript:  typescript.corejs,
+    chrome51:    flag,
   }
 },
 {
@@ -585,7 +653,11 @@ exports.tests = [
   category: 'proposal (stage 1)',
   significance: 'small',
   exec: function(){/*
-    return typeof ArrayBuffer.transfer === 'function';
+    var buffer1 = new Uint8Array([1, 2, 3]).buffer;
+    var buffer2 = ArrayBuffer.transfer(buffer1, 2);
+    return buffer1.byteLength === 0
+      && buffer2.byteLength === 2
+      && new Uint8Array(buffer2)[0] === 1;
   */},
   res : {
     edge13:    flag,
@@ -607,6 +679,7 @@ exports.tests = [
         firefox39: true,
         firefox42: false,
         firefox44: false,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -615,7 +688,8 @@ exports.tests = [
         return typeof SIMD.Float32x4 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -624,7 +698,8 @@ exports.tests = [
         return typeof SIMD.Float64x2 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -633,7 +708,8 @@ exports.tests = [
         return typeof SIMD.Int32x4 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -642,6 +718,7 @@ exports.tests = [
         return typeof SIMD.Int16x8 === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -650,7 +727,8 @@ exports.tests = [
         return typeof SIMD.Int8x16 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -659,6 +737,7 @@ exports.tests = [
         return typeof SIMD.Bool32x4 === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -667,6 +746,7 @@ exports.tests = [
         return typeof SIMD.Bool16x8 === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -675,6 +755,7 @@ exports.tests = [
         return typeof SIMD.Bool8x16 === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -683,7 +764,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.abs === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -692,7 +774,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.add === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -701,6 +784,7 @@ exports.tests = [
         return typeof SIMD.Int16x8.addSaturate === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -709,6 +793,7 @@ exports.tests = [
         return typeof SIMD.Bool16x8.and === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -717,6 +802,7 @@ exports.tests = [
         return typeof SIMD.Bool32x4.anyTrue === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -725,6 +811,7 @@ exports.tests = [
         return typeof SIMD.Bool32x4.allTrue === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -733,7 +820,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.check === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -742,7 +830,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.equal === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -751,7 +840,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.extractLane === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -760,7 +850,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.greaterThan === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -769,7 +860,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.greaterThanOrEqual === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -778,7 +870,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.lessThan === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -787,7 +880,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.lessThanOrEqual === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -796,7 +890,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.mul === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -805,7 +900,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.div === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -814,7 +910,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.max === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -823,6 +920,7 @@ exports.tests = [
         return typeof SIMD.Float32x4.maxNum === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -831,7 +929,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.min === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -840,6 +939,7 @@ exports.tests = [
         return typeof SIMD.Float32x4.minNum === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -848,7 +948,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.neg === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -857,6 +958,7 @@ exports.tests = [
         return typeof SIMD.Bool16x8.not === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -865,7 +967,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.notEqual === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -874,6 +977,7 @@ exports.tests = [
         return typeof SIMD.Float32x4.reciprocalApproximation === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -882,6 +986,7 @@ exports.tests = [
         return typeof SIMD.Float32x4.reciprocalSqrtApproximation === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -890,7 +995,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.replaceLane === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -899,7 +1005,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.select === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -916,6 +1023,7 @@ exports.tests = [
         return typeof SIMD.Int32x4.shiftLeftByScalar === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -940,7 +1048,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.shuffle === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -949,7 +1058,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.splat === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -958,7 +1068,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.sqrt === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -967,7 +1078,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.store === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -976,7 +1088,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.store1 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -985,7 +1098,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.store1 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -994,7 +1108,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.store1 === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -1003,7 +1118,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.sub === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -1012,6 +1128,7 @@ exports.tests = [
         return typeof SIMD.Int16x8.subSaturate === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -1020,7 +1137,8 @@ exports.tests = [
         return typeof SIMD.Float32x4.swizzle === 'function';
       */},
       res: {
-        edge13:  flag,
+        edge13:    flag,
+        firefox48: firefox.nightly,
       }
     },
     {
@@ -1029,6 +1147,7 @@ exports.tests = [
         return typeof SIMD.Bool16x8.xor === 'function';
       */},
       res: {
+        firefox48: firefox.nightly,
       }
     }
   ]
@@ -1294,6 +1413,34 @@ exports.tests = [
   }
 },
 {
+  name: 'generator throw() caught by inner generator',
+  category: '2016 misc',
+  significance: 'tiny',
+  link: 'https://github.com/tc39/ecma262/issues/293',
+  exec: function(){/*
+    function * generator() {
+      yield * (function * () {
+        try {
+          yield 'foo';
+        }
+        catch(e) {
+          return;
+        }
+      }());
+      yield 'bar';
+    }
+    var iter = generator();
+    iter.next();
+    return iter['throw']().value === 'bar';
+  */},
+  res: {
+      firefox31: true,
+      chrome39:  true,
+      node:      flag,
+      node4:     true,
+  }
+},
+{
   name: 'strict fn w/ non-strict non-simple params is error',
   category: '2016 misc',
   significance: 'tiny',
@@ -1323,6 +1470,8 @@ exports.tests = [
   res: {
     babel:       true,
     edge13:      flag,
+    edge14:      true,
+    firefox47:   true,
     typescript:  true,
     chrome49:    true,
   }
@@ -1340,6 +1489,8 @@ exports.tests = [
   res: {
     babel:       true,
     edge13:      flag,
+    edge14:      true,
+    firefox47:   true,
     typescript:  true,
     chrome49:    true,
   }
@@ -1360,6 +1511,8 @@ exports.tests = [
     return passed;
   */},
   res: {
+    firefox47:   true,
+    chrome51:    true,
   },
 },
 {
@@ -1382,6 +1535,7 @@ exports.tests = [
   res: {
     firefox43:       true,
     chrome49:        true,
+    edge14:          flag,
   },
 },
 {
@@ -1462,7 +1616,7 @@ exports.tests = [
 {
   name: 'Observable',
   category: 'proposal (stage 1)',
-  significance: 'small',
+  significance: 'medium',
   link: 'https://github.com/zenparsing/es-observable',
   'subtests': [
     {
@@ -1548,12 +1702,888 @@ exports.tests = [
       }
     }
   ]
+},
+{
+  name: 'String.prototype.matchAll',
+  category: 'proposal (stage 1)',
+  significance: 'small',
+  link: 'https://github.com/tc39/String.prototype.matchAll',
+  exec: function(){/*
+    var iterator = '11a2bb'.matchAll(/(\d)(\D)/);
+    if(iterator[Symbol.iterator]() !== iterator)return false;
+    var a = '', b = '', c = '', step;
+    while(!(step = iterator.next()).done){
+      a += step.value[0];
+      b += step.value[1];
+      c += step.value[2];
+    }
+    return a === '1a2b'
+      && b === '12'
+      && c === 'ab';
+  */},
+  res: {
+    babel:       true,
+    typescript:  typescript.corejs,
+  }
+},
+{
+  name: 'Shared memory and atomics',
+  category: 'draft (stage 2)',
+  significance: 'large',
+  link: 'https://github.com/tc39/ecmascript_sharedmem',
+  'subtests': [
+    {
+      name: 'SharedArrayBuffer',
+      exec: function () {/*
+        return typeof SharedArrayBuffer === 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'SharedArrayBuffer.isView',
+      exec: function () {/*
+        return typeof SharedArrayBuffer.isView === 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'SharedArrayBuffer[Symbol.species]',
+      exec: function () {/*
+        return SharedArrayBuffer[Symbol.species]() === SharedArrayBuffer;
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'SharedArrayBuffer.prototype.byteLength',
+      exec: function () {/*
+        return 'byteLength' in SharedArrayBuffer.prototype;
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'SharedArrayBuffer.prototype.slice',
+      exec: function () {/*
+        return typeof SharedArrayBuffer.prototype.slice === 'function';
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'SharedArrayBuffer.prototype[Symbol.toStringTag]',
+      exec: function () {/*
+        return SharedArrayBuffer.prototype[Symbol.toStringTag] === 'SharedArrayBuffer';
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Atomics constants',
+      exec: function () {/*
+        return Atomics.OK === 0
+          && Atomics.NOTEQUAL === -1
+          && Atomics.TIMEDOUT === -2;
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.add',
+      exec: function () {/*
+        return typeof Atomics.add == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.and',
+      exec: function () {/*
+        return typeof Atomics.and == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.compareExchange',
+      exec: function () {/*
+        return typeof Atomics.compareExchange == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.exchange',
+      exec: function () {/*
+        return typeof Atomics.exchange == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.futexWait',
+      exec: function () {/*
+        return typeof Atomics.futexWait == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.futexWake',
+      exec: function () {/*
+        return typeof Atomics.futexWake == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.futexWakeOrRequeue',
+      exec: function () {/*
+        return typeof Atomics.futexWakeOrRequeue == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.isLockFree',
+      exec: function () {/*
+        return typeof Atomics.isLockFree == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.load',
+      exec: function () {/*
+        return typeof Atomics.load == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.or',
+      exec: function () {/*
+        return typeof Atomics.or == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.store',
+      exec: function () {/*
+        return typeof Atomics.store == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.sub',
+      exec: function () {/*
+        return typeof Atomics.sub == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    },
+    {
+      name: 'Atomics.xor',
+      exec: function () {/*
+        return typeof Atomics.xor == 'function';
+      */},
+      res: {
+        firefox46:    firefox.nightly,
+      }
+    }
+  ]
+},
+{
+  name: 'Additional meta properties',
+  category: 'strawman (stage 0)',
+  significance: 'medium',
+  link: 'https://github.com/allenwb/ESideas/blob/master/ES7MetaProps.md',
+  subtests: [
+    {
+      name: 'function.callee',
+      exec: function(){/*
+        var f = _ => function.callee === f;
+        return f();
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'function.count',
+      exec: function(){/*
+        return (_ => function.count)(1, 2, 3) === 3;
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'function.arguments',
+      exec: function(){/*
+        var arr =  (_ => function.arguments)(1, 2, 3);
+        return Array.isArray(arr)
+          && arr.length === 3
+          && arr[0] === 1
+          && arr[1] === 2
+          && arr[2] === 3;
+      */},
+      res: {
+      }
+    }
+  ]
+},
+{
+  name: 'Method parameter decorators',
+  link: 'https://docs.google.com/document/d/1Qpkqf_8NzAwfD8LdnqPjXAQ2wwh8BBUGynhn-ZlCWT0',
+  category: 'strawman (stage 0)',
+  significance: 'small',
+  exec: function(){/*
+    var target, key, index;
+    function decorator(_target, _key, _index){
+      target = _target;
+      key    = _key;
+      index  = _index;
+    }
+    class C {
+      method(@decorator foo){ }
+    }
+    return target === C.prototype
+      && key === 'method'
+      && index === 0;
+  */},
+  res : {
+    typescript:  true,
+  }
+},
+{
+  name: 'Function expression decorators',
+  link: 'https://docs.google.com/document/d/1ikxIP5-RVYq6d_f8lAvf3pKC00W78ueyp-xIZ6q67uU/edit?pref=2&pli=1#',
+  category: 'strawman (stage 0)',
+  significance: 'small',
+  exec: function(){/*
+    function inverse(f){
+      return function(){
+        return !f.apply(this, arguments);
+      };
+    }
+    return (@inverse function(it){
+      return it % 2;
+    })(2);
+  */},
+  res : {
+  }
+},
+{
+  name: 'Object.prototype getter/setter methods',
+  link: 'https://tc39.github.io/ecma262/#sec-object.prototype.__defineGetter__',
+  category: '2017 annex b',
+  significance: 'tiny',
+  subtests: [{
+      name: '__defineGetter__',
+      exec: function () {/*
+        var obj = {};
+        function bar() { return "bar"; }
+        Object.prototype.__defineGetter__.call(obj, "foo", bar);
+        var prop = Object.getOwnPropertyDescriptor(obj, "foo");
+        return prop.get === bar && !prop.writable && prop.configurable
+          && prop.enumerable;
+      */},
+      res: (temp.basicDefineGetterResults = {
+        babel:       true,
+        typescript:  typescript.corejs,
+        ie11:        true,
+        firefox31:   true,
+        chrome30:    true,
+        node:        true,
+        iojs:        true,
+        webkit:      true,
+        android40:   true,
+      })
+    },
+    {
+      name: '__defineGetter__, symbols',
+      exec: function () {/*
+        var obj = {};
+        var sym = Symbol();
+        function bar() { return "bar"; }
+        Object.prototype.__defineGetter__.call(obj, sym, bar);
+        var prop = Object.getOwnPropertyDescriptor(obj, sym);
+        return prop.get === bar && !prop.writable && prop.configurable
+          && prop.enumerable;
+      */},
+      res: (temp.defineGetterSymbolsResults = {
+        babel:       true,
+        typescript:  typescript.corejs,
+        edge12:      true,
+        firefox36:   true,
+        chrome30:    flag,
+        chrome38:    true,
+        node:        true,
+        iojs:        true,
+        webkit:      true,
+        android40:   true,
+      })
+    },
+    {
+      name: '__defineGetter__, ToObject(this)',
+      exec: function () {/*
+        var key = '__accessors_test__';
+        __defineGetter__.call(1, key, function(){});
+        try {
+          __defineGetter__.call(null, key, function(){});
+        } catch(e){
+          return true;
+        }
+      */},
+      res: {
+        babel:       true,
+        typescript:  typescript.corejs,
+        firefox48:   true,
+        webkit:      true,
+      },
+    },
+    {
+      name: '__defineSetter__',
+      exec: function () {/*
+        var obj = {};
+        function bar() {}
+        Object.prototype.__defineSetter__.call(obj, "foo", bar);
+        var prop = Object.getOwnPropertyDescriptor(obj, "foo");
+        return prop.set === bar && !prop.writable && prop.configurable
+          && prop.enumerable;
+      */},
+      res: temp.basicDefineGetterResults,
+    },
+    {
+      name: '__defineSetter__, symbols',
+      exec: function () {/*
+        var obj = {};
+        var sym = Symbol();
+        function bar(baz) {}
+        Object.prototype.__defineSetter__.call(obj, sym, bar);
+        var prop = Object.getOwnPropertyDescriptor(obj, sym);
+        return prop.set === bar && !prop.writable && prop.configurable
+          && prop.enumerable;
+      */},
+      res: temp.defineGetterSymbolsResults,
+    },
+    {
+      name: '__defineSetter__, ToObject(this)',
+      exec: function () {/*
+        var key = '__accessors_test__';
+        __defineSetter__.call(1, key, function(){});
+        try {
+          __defineSetter__.call(null, key, function(){});
+        } catch(e){
+          return true;
+        }
+      */},
+      res: {
+        babel:       true,
+        typescript:  typescript.corejs,
+        firefox48:   true,
+        webkit:      true,
+      },
+    },
+    {
+      name: '__lookupGetter__',
+      exec: function () {/*
+        var obj = {
+          get foo() { return "bar"},
+          qux: 1
+        };
+        var foo = Object.prototype.__lookupGetter__.call(obj, "foo");
+        return foo() === "bar"
+          && Object.prototype.__lookupGetter__.call(obj, "qux") === undefined
+          && Object.prototype.__lookupGetter__.call(obj, "baz") === undefined;
+      */},
+      res: temp.basicDefineGetterResults,
+    },
+    {
+      name: '__lookupGetter__, prototype chain',
+      exec: function () {/*
+        var obj = {
+          get foo() { return "bar"},
+          qux: 1
+        };
+        var foo = Object.prototype.__lookupGetter__.call(Object.create(obj), "foo");
+        return foo() === "bar"
+          && Object.prototype.__lookupGetter__.call(obj, "qux") === undefined
+          && Object.prototype.__lookupGetter__.call(obj, "baz") === undefined;
+      */},
+      res: temp.basicDefineGetterResults,
+    },
+    {
+      name: '__lookupGetter__, symbols',
+      exec: function () {/*
+        var sym = Symbol();
+        var sym2 = Symbol();
+        var obj = {};
+        Object.defineProperty(obj, sym, { get: function() { return "bar"; }});
+        Object.defineProperty(obj, sym2, { value: 1 });
+        var foo = Object.prototype.__lookupGetter__.call(obj, sym);
+        return foo() === "bar"
+          && Object.prototype.__lookupGetter__.call(obj, sym2) === undefined
+          && Object.prototype.__lookupGetter__.call(obj, Symbol()) === undefined;
+      */},
+      res: temp.defineGetterSymbolsResults,
+    },
+    {
+      name: '__lookupGetter__, ToObject(this)',
+      exec: function () {/*
+        __lookupGetter__.call(1, 'key');
+        try {
+          __lookupGetter__.call(null, 'key');
+        } catch(e){
+          return true;
+        }
+      */},
+      res: {
+        babel:       true,
+        typescript:  typescript.corejs,
+        ie11:        true,
+        firefox31:   true,
+        webkit:      true,
+      },
+    },
+    {
+      name: '__lookupSetter__',
+      exec: function () {/*
+        var obj = {
+          set foo(baz) { return "bar"; },
+          qux: 1
+        };
+        var foo = Object.prototype.__lookupSetter__.call(obj, "foo");
+        return foo() === "bar"
+          && Object.prototype.__lookupSetter__.call(obj, "qux") === undefined
+          && Object.prototype.__lookupSetter__.call(obj, "baz") === undefined;
+      */},
+      res: temp.basicDefineGetterResults,
+    },
+    {
+      name: '__lookupSetter__, prototype chain',
+      exec: function () {/*
+        var obj = {
+          set foo(baz) { return "bar"; },
+          qux: 1
+        };
+        var foo = Object.prototype.__lookupSetter__.call(Object.create(obj), "foo");
+        return foo() === "bar"
+          && Object.prototype.__lookupSetter__.call(obj, "qux") === undefined
+          && Object.prototype.__lookupSetter__.call(obj, "baz") === undefined;
+      */},
+      res: temp.basicDefineGetterResults,
+    },
+    {
+      name: '__lookupSetter__, symbols',
+      exec: function () {/*
+        var sym = Symbol();
+        var sym2 = Symbol();
+        var obj = {};
+        Object.defineProperty(obj, sym, { set: function(baz) { return "bar"; }});
+        Object.defineProperty(obj, sym2, { value: 1 });
+        var foo = Object.prototype.__lookupSetter__.call(obj, sym);
+        return foo() === "bar"
+          && Object.prototype.__lookupSetter__.call(obj, sym2) === undefined
+          && Object.prototype.__lookupSetter__.call(obj, Symbol()) === undefined;
+      */},
+      res: temp.defineGetterSymbolsResults,
+    },
+    {
+      name: '__lookupSetter__, ToObject(this)',
+      exec: function () {/*
+        __lookupSetter__.call(1, 'key');
+        try {
+          __lookupSetter__.call(null, 'key');
+        } catch(e){
+          return true;
+        }
+      */},
+      res: {
+        babel:       true,
+        typescript:  typescript.corejs,
+        ie11:        true,
+        firefox31:   true,
+        webkit:      true,
+      },
+    }
+  ]
+},
+{
+  name: 'Proxy internal calls, getter/setter methods',
+  link: 'https://tc39.github.io/ecma262/#sec-object.prototype.__defineGetter__',
+  category: '2017 annex b',
+  significance: 'small',
+  subtests: [{
+      name: '__defineGetter__',
+      exec: function () {/*
+        // Object.prototype.__defineGetter__ -> DefinePropertyOrThrow -> [[DefineOwnProperty]]
+        var def = [];
+        var p = new Proxy({}, { defineProperty: function(o, v, desc) { def.push(v); Object.defineProperty(o, v, desc); return true; }});
+        Object.prototype.__defineGetter__.call(p, "foo", Object);
+        return def + '' === "foo";
+      */},
+      res: {
+        firefox31:   true,
+        edge14:      true,
+      }
+    },
+    {
+      name: '__defineSetter__',
+      exec: function () {/*
+        // Object.prototype.__defineSetter__ -> DefinePropertyOrThrow -> [[DefineOwnProperty]]
+        var def = [];
+        var p = new Proxy({}, { defineProperty: function(o, v, desc) { def.push(v); Object.defineProperty(o, v, desc); return true; }});
+        Object.prototype.__defineSetter__.call(p, "foo", Object);
+        return def + '' === "foo";
+      */},
+      res: {
+        firefox31:   true,
+        edge14:      true,
+      }
+    },
+    {
+      name: '__lookupGetter__',
+      exec: function () {/*
+        // Object.prototype.__lookupGetter__ -> [[GetOwnProperty]]
+        // Object.prototype.__lookupGetter__ -> [[GetPrototypeOf]]
+        var gopd = [];
+        var gpo = false;
+        var p = new Proxy({}, {
+          getPrototypeOf: function(o) { gpo = true; return Object.getPrototypeOf(o); },
+          getOwnPropertyDescriptor: function(o, v) { gopd.push(v); return Object.getOwnPropertyDescriptor(o, v); }
+        });
+        Object.prototype.__lookupGetter__.call(p, "foo");
+        return gopd + '' === "foo" && gpo;
+      */},
+      res: {
+      }
+    },
+    {
+      name: '__lookupSetter__',
+      exec: function () {/*
+        // Object.prototype.__lookupSetter__ -> [[GetOwnProperty]]
+        // Object.prototype.__lookupSetter__ -> [[GetPrototypeOf]]
+        var gopd = [];
+        var gpo = false;
+        var p = new Proxy({}, {
+          getPrototypeOf: function(o) { gpo = true; return Object.getPrototypeOf(o); },
+          getOwnPropertyDescriptor: function(o, v) { gopd.push(v); return Object.getOwnPropertyDescriptor(o, v); }
+        });
+        Object.prototype.__lookupSetter__.call(p, "foo");
+        return gopd + '' === "foo" && gpo;
+      */},
+      res: {
+      }
+    }
+  ]
+},
+{
+  name: 'WeakRefs',
+  link: 'https://github.com/tc39/proposal-weakrefs',
+  category: 'strawman (stage 0)',
+  significance: 'large',
+  exec: function(){/*
+    var O = {};
+    var weakref = makeWeakRef(O);
+    var works = weakref.get() === O;
+    weakref.clear();
+    return works && weakref.get() === undefined;
+  */},
+  res : {
+  }
+},
+{
+  name: 'Async iteration',
+  category: 'proposal (stage 1)',
+  significance: 'medium',
+  link: 'https://github.com/tc39/proposal-async-iteration',
+  subtests: [
+    {
+      name: 'async generators',
+      exec: function(){/*
+        async function*generator(){
+          yield 42;
+        }
+
+        var iterator = generator();
+        iterator.next().then(function(step){
+          if(iterator[Symbol.asyncIterator]() === iterator && step.done === false && step.value === 42)asyncTestPassed();
+        });
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'for-await-of loops',
+      exec: function(){/*
+        var asyncIterable = {};
+        asyncIterable[Symbol.asyncIterator] = function(){
+          var i = 0;
+          return {
+            next: function(){
+              switch(i++){
+                case 1: return Promise.resolve({done: false, value: 'a'});
+                case 2: return Promise.resolve({done: false, value: 'b'});
+              } return Promise.resolve({done: true});
+            }
+          };
+        };
+
+        (async function(){
+          var result = '';
+          for await(var value of asyncIterable)result += value;
+          if(result === 'ab')asyncTestPassed();
+        })();
+      */},
+      res: {
+      }
+    }
+  ]
+},
+{
+  name: 'RegExp named capture groups',
+  link: 'https://github.com/goyakin/es-regexp-named-groups',
+  category: 'strawman (stage 0)',
+  significance: 'small',
+  exec: function(){/*
+    var result = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/.exec('2016-03-11');
+    return result.groups.year === '2016'
+      && result.groups.month === '03'
+      && result.groups.day === '11'
+      && result.groups[0] === '2016-03-11'
+      && result.groups[1] === '2016'
+      && result.groups[2] === '03'
+      && result.groups[3] === '11';
+  */},
+  res : {
+  }
+},
+{
+  name: 'RegExp lookbehind',
+  link: 'https://github.com/goyakin/es-regexp-lookbehind',
+  category: 'strawman (stage 0)',
+  significance: 'small',
+  exec: function(){/*
+    return /(?<=a)b/.test('ab') && /(?<!a)b/.test('cb');
+  */},
+  res : {
+  }
+},
+{
+  name: 'Reflect.isCallable / Reflect.isConstructor',
+  category: 'strawman (stage 0)',
+  significance: 'small',
+  link: 'https://github.com/caitp/TC39-Proposals/blob/master/tc39-reflect-isconstructor-iscallable.md',
+  subtests: [
+    {
+      name: 'Reflect.isCallable',
+      exec: function(){/*
+        return Reflect.isCallable(function(){})
+          && Reflect.isCallable(_ => _)
+          && !Reflect.isCallable(class {});
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Reflect.isConstructor',
+      exec: function(){/*
+        return Reflect.isConstructor(function(){})
+          && !Reflect.isConstructor(_ => _)
+          && Reflect.isConstructor(class {});
+      */},
+      res: {
+      }
+    }
+  ]
+},
+{
+  name: 'Metadata reflection API',
+  category: 'pre-strawman',
+  significance: 'medium',
+  link: 'https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md',
+  subtests: [
+    {
+      name: 'Reflect.defineMetadata',
+      exec: function(){/*
+        return typeof Reflect.defineMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.hasMetadata',
+      exec: function(){/*
+        return typeof Reflect.hasMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.hasOwnMetadata',
+      exec: function(){/*
+        return typeof Reflect.hasOwnMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.getMetadata',
+      exec: function(){/*
+        return typeof Reflect.getMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.getOwnMetadata',
+      exec: function(){/*
+        return typeof Reflect.getOwnMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.getMetadataKeys',
+      exec: function(){/*
+        return typeof Reflect.getMetadataKeys == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.getOwnMetadataKeys',
+      exec: function(){/*
+        return typeof Reflect.getOwnMetadataKeys == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.deleteMetadata',
+      exec: function(){/*
+        return typeof Reflect.deleteMetadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    },
+    {
+      name: 'Reflect.metadata',
+      exec: function(){/*
+        return typeof Reflect.metadata == 'function';
+      */},
+      res: {
+        babel:      true,
+        typescript: typescript.corejs,
+      }
+    }
+  ]
+},
+{
+  name: 'Zones',
+  category: 'strawman (stage 0)',
+  significance: 'large',
+  link: 'https://github.com/domenic/zones',
+  subtests: [
+    {
+      name: 'Zone',
+      exec: function(){/*
+        return typeof Zone == 'function';
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.current',
+      exec: function(){/*
+        return 'current' in Zone;
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.prototype.name',
+      exec: function(){/*
+        return 'name' in Zone.prototype;
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.prototype.parent',
+      exec: function(){/*
+        return 'parent' in Zone.prototype;
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.prototype.fork',
+      exec: function(){/*
+        return typeof Zone.prototype.fork == 'function';
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.prototype.run',
+      exec: function(){/*
+        return typeof Zone.prototype.run == 'function';
+      */},
+      res: {
+      }
+    },
+    {
+      name: 'Zone.prototype.wrap',
+      exec: function(){/*
+        return typeof Zone.prototype.wrap == 'function';
+      */},
+      res: {
+      }
+    }
+  ]
 }
 ];
 
 //Shift annex B features to the bottom
 exports.tests = exports.tests.reduce(function(a,e) {
-  var index = ['2016 features', '2016 misc', 'finished (stage 4)', 'candidate (stage 3)', 'draft (stage 2)', 'proposal (stage 1)', 'strawman (stage 0)', 'pre-strawman'].indexOf(e.category);
+  var index = ['2016 features', '2016 misc', '2017 annex b', 'finished (stage 4)', 'candidate (stage 3)', 'draft (stage 2)', 'proposal (stage 1)', 'strawman (stage 0)', 'pre-strawman'].indexOf(e.category);
   if (index === -1) {
     console.log('"' + a.category + '" is not an ESnext category!');
   }
