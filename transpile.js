@@ -112,7 +112,7 @@ function createHandler(opts) {
                     var babel = require('babel-core');
                     transpilers.push({
                         compiler: babel, method: 'transform',
-                        args: (req,code) => [code, { plugins: babelPlugins }],
+                        args: (req,code) => [code, { plugins: babelPlugins, compact:false }],
                         outputProperty: 'code'
                     }) ;
                 }
