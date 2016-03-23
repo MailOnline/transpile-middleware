@@ -33,7 +33,7 @@
       "babel-plugin-transform-es2015-literals": "^6.5.0",
       "babel-plugin-transform-es2015-shorthand-properties": "^6.5.0",
       "babel-plugin-transform-es2015-template-literals": "^6.6.5",
-      "babel-plugin-transform-es2015-destructuring": "^6.6.5"
+      "babel-plugin-transform-es2015-destructuring": "^6.6.5",
       "nodent": "^2.4.0"
   },
   
