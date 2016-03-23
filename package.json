@@ -4,9 +4,8 @@
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {
-    "prepublish": "npm test",
-    "test": "npm run kangax && node test",
-    "kangax": "curl -s -o ./kangax/data-es6.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-es6.js && curl -s -o ./kangax/data-esnext.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-esnext.js"
+    "test": "node test",
+    "kangax": "curl -s -o ./kangax/data-es6.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-es6.js && curl -s -o ./kangax/data-esnext.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-esnext.js && npm test && git commit -am 'Updated kangax files'"
   },
   "keywords": [
     "Transpile",
