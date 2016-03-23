@@ -1,0 +1,30 @@
+function test() {
+    const x = () => ({
+        a: 1,
+        b: 2,
+        c: this
+    });
+
+    var _x = x();
+
+    let a = _x.a;
+    let b = _x.b;
+
+    console.log(`${ a + b }`);
+    const q = {
+        a,
+        [b]: 'bb'
+    };
+    console.log(q);
+}
+
+function atest() {
+    return new Promise(function ($return, $error) {
+        const a = () => {
+            return new Promise(function ($return, $error) {
+                return $return(2);
+            }.$asyncbind(this));
+        };
+        return a().then($return, $error);
+    }.$asyncbind(this));
+}

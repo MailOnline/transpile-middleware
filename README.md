@@ -49,6 +49,7 @@ An array of features used by your app. Valid values (derived from the Kangax ES6
 	es6_arrow_functions
 	es6_object_literal_extensions (since v0.9.1)
 	es6_template_strings (since v0.9.1)
+	es6_template_literals (since v0.9.5)
 	es6_destructuring_declarations (since v0.9.2)
 	es6_destructuring_assignment (since v0.9.2)
 	es6_destructuring_parameters (since v0.9.2)

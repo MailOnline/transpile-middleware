@@ -4,7 +4,7 @@
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {
-    "prepublish": "npm run kangax",
+    "prepublish": "npm test",
     "test": "npm run kangax && node test",
     "kangax": "curl -s -o ./kangax/data-es6.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-es6.js && curl -s -o ./kangax/data-esnext.js https://raw.githubusercontent.com/kangax/compat-table/gh-pages/data-esnext.js"
   },
@@ -25,6 +25,18 @@
     "uap-ref-impl": "^0.2.0",
     "yamlparser": "0.0.2"
   },
+  
+  "devDependencies": {
+      "babel-plugin-transform-es2015-arrow-functions": "^6.5.2",
+      "babel-plugin-transform-es2015-block-scoping": "^6.7.1",
+      "babel-plugin-transform-es2015-computed-properties": "^6.6.5",
+      "babel-plugin-transform-es2015-destructuring": "^6.6.5",
+      "babel-plugin-transform-es2015-literals": "^6.5.0",
+      "babel-plugin-transform-es2015-shorthand-properties": "^6.5.0",
+      "babel-plugin-transform-es2015-template-literals": "^6.6.5",
+      "nodent": "^2.4.0"
+  },
+  
   "repository": {
     "type": "git",
     "url": "https://github.com/MailOnline/transpile-middleware.git"
