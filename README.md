@@ -59,6 +59,11 @@ An array of features used by your app. Valid values (derived from the Kangax ES6
 	es6_destructuring_declarations (since v0.9.2)
 	es6_destructuring_assignment (since v0.9.2)
 	es6_destructuring_parameters (since v0.9.2)
+	async_functions (invokes Nodent)
+	async_return (invokes Nodent)
+	async_throw (invokes Nodent)
+	await_anywhere (invokes Nodent)
+
 
 The following values are valid, but not implemented in v0.9 (requires babel support for each feature)
 
