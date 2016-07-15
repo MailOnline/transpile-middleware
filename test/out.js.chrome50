@@ -20,7 +20,8 @@ function test() {
 
 function atest() {
     return new Promise(function ($return, $error) {
-        const a = () => {
+        var a;
+        a = () => {
             return new Promise(function ($return, $error) {
                 return $return(2);
             }.$asyncbind(this));

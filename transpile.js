@@ -16,8 +16,11 @@ function makeTest(test){
         })?test:false;
     }
 }
-require('./kangax/data-es6.js').tests.forEach(function(test) { return features["es6_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
-require('./kangax/data-esnext.js').tests.forEach(function(test) { return features["esnext_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
+
+var kangax = require('./build/compat.json') ;
+
+kangax.es6.tests.forEach(function(test) { return features["es6_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
+kangax.esnext.tests.forEach(function(test) { return features["esnext_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
 
 // Map babel transforms to kangax names
 var kangaxToBabel = {
@@ -32,6 +35,7 @@ var kangaxToBabel = {
 } ;
 
 var nodentPlugins = {
+    async_functions:true,
     async_return:true,
     async_throw:true,
     await_anywhere:true
@@ -80,13 +84,14 @@ function createHandler(opts) {
 
                 var transpilers = [] ;
                 var babelPlugins = {} ;
-                var useNodent = false ;
+                var useNodent = null ;
                 opts.features.forEach(feature => {
+                    var test ;
                     if (aliases[feature])
                         feature = aliases[feature] ;
-                    if (nodentPlugins[feature])
-                        useNodent = true ;
-                    else if (features[feature]) {
+                    if (test = nodentPlugins[feature]) {
+                        useNodent = { promises: true } ;
+                    } else if (features[feature]) {
                         if (kangaxToBabel[feature] && !features[feature](ua.ua)) {
                             kangaxToBabel[feature].forEach(function(plugin){
                                 babelPlugins[plugin] = _try(require,ex=>console.error("Feature "+feature+": "+ex))(plugin) ;
@@ -96,18 +101,26 @@ function createHandler(opts) {
                 }) ;
 
                 if (useNodent) {
+                    useNodent.sourcemap = sourcemap ;
+                    
+                    if (features.esnext_async_functions(ua.ua))
+                        useNodent.engine = true ;
+                    
                     var nodent = {
                         compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
                         method: 'compile',
-                        args: (req,code) => [code, req.url, { promises: true, sourcemap: sourcemap }],
+                        args: (req,code) => [code, req.url, useNodent],
                         outputProperty: 'code' } ;
-                    if (!nodent.compiler.version || nodent.compiler.version<"2")
-                        console.log("Nodent version must be >2.4.0") ;
+                    if (!nodent.compiler.version || nodent.compiler.version<"2.6")
+                        console.log("Nodent version should be >=2.6") ;
                     else
                         transpilers.push(nodent) ;
                 }
 
                 babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
+                if (useNodent && useNodent.engine)
+                    babelPlugins.push(require('babel-plugin-syntax-async-functions')) ;
+                
                 if (babelPlugins.length) {
                     var babel = require('babel-core');
                     transpilers.push({

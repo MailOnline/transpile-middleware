@@ -8,6 +8,12 @@ Installation
 
 	npm install transpile-middleware
 
+The package will install both the middleware, and _all_ the supporting Babel & Nodent packages to support all features. You can install just the transpiler with:
+
+	npm install --prod transpile-middleware
+	
+In this case, if you are not using all the supported features, install the Babel & Nodent packages you required for your project.
+
 How it works
 =====
 transpile-middleware compiles and caches your source JavaScript using [Nodent](http://nodent.mailed.me.uk) and/or [Babel](http://babeljs.io) as it is requested by browsers. It checks the compatibility of the browser and only transpiles features not implemented by the browser, allowing the native implementations to take over where possible.
@@ -142,3 +148,20 @@ The following values are valid, but not implemented in v0.9 (requires babel supp
 	esnext_Error_isError
 	esnext_Math_methods_for_64_bit_integers
 	esnext_Reflect_Realm
+
+Updating
+========
+
+You can force an update from the Kangax browser capability database (see [http://kangax.github.io/compat-table/](http://kangax.github.io/compat-table/)) using:
+
+	npm run update-kangax
+	
+You can force an update to the User Agent database using 
+
+	npm run update-ua
+	
+...or update both with
+
+	npm run update-all
+	
+Updating these components installs and builds quite a lot of dependancies which are installed on demand.

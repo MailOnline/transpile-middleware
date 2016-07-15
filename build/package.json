@@ -1,0 +1,14 @@
+{
+  "name": "build-compat-tables",
+  "version": "1.0.0",
+  "description": "Utility to build JSON compat-tables from kangax/compat-table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "matAtBread",
+  "license": "MIT",
+  "dependencies": {
+    "compat-table": "git+https://git@github.com/kangax/compat-table.git#gh-pages"
+  }
+}

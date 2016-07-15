@@ -10,3 +10,4 @@ async function atest() {
     const a = async ()=>2;
     return await a() ;
 }
+
