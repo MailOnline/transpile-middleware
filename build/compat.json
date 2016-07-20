@@ -11380,6 +11380,7 @@
               "es6shim": true,
               "edge12": true,
               "chrome51": true,
+              "chrome52": false,
               "safari9": true,
               "safaritp": true,
               "safari10": true,
@@ -14139,7 +14140,6 @@
               "typescript": true,
               "xs6": true,
               "jxa": true,
-              "chrome52": true,
               "safaritp": true,
               "safari10": true,
               "webkit": true
@@ -14846,7 +14846,7 @@
         "full": "Babel 6.5 + core-js 2.4",
         "short": "Babel +<br><nobr>core-js</nobr>",
         "platformtype": "compiler",
-        "note_id": "experimental-flag",
+        "note_id": "babel-optional",
         "note_html": "Have to be enabled via <code>babel-preset-stage-0</code> preset"
       },
       "jsx": {
@@ -15072,12 +15072,12 @@
       "chrome50": {
         "full": "Chrome",
         "short": "CH 50",
+        "obsolete": true,
         "note_id": "experimental-flag"
       },
       "chrome51": {
         "full": "Chrome",
         "short": "CH 51",
-        "unstable": true,
         "note_id": "experimental-flag"
       },
       "chrome52": {
@@ -15243,6 +15243,7 @@
                 "note_id": "typescript-async-await",
                 "note_html": "TypeScript <code>async</code> / <code>await</code> requires native generators support."
               },
+              "chrome52": "flagged",
               "edge13": "flagged",
               "edge14": true
             }
@@ -15261,6 +15262,7 @@
                 "note_id": "typescript-async-await",
                 "note_html": "TypeScript <code>async</code> / <code>await</code> requires native generators support."
               },
+              "chrome52": "flagged",
               "edge13": "flagged",
               "edge14": true
             }
@@ -15275,6 +15277,7 @@
                 "note_html": "This feature requires native generators or <code>regenerator-runtime</code>, it's a part of <code>babel-polyfill</code> or <code>babel-runtime</code>."
               },
               "typescript": false,
+              "chrome52": "flagged",
               "edge13": "flagged",
               "edge14": true
             }
