@@ -22,7 +22,7 @@ var kangax = require('./build/compat.json') ;
 kangax.es6.tests.forEach(function(test) { return features["es6_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
 kangax.esnext.tests.forEach(function(test) { return features["esnext_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
 
-// Map babel transforms to kangax names
+//Map babel transforms to kangax names
 var kangaxToBabel = {
     es6_arrow_functions:['babel-plugin-transform-es2015-arrow-functions'],
     es6_const:['babel-plugin-transform-es2015-block-scoping'],
@@ -45,7 +45,7 @@ var aliases = {
     es6_template_strings:'es6_template_literals'
 };
 
-var transforms = {};
+var transformed = {};
 
 function _try(fn,error) {
     return function(){
@@ -59,9 +59,10 @@ function _try(fn,error) {
 }
 
 function createHandler(opts) {
-    if (!Array.isArray(opts.features))
+    if (!Array.isArray(opts.features)) {
         return function(_0,_1,next) { next(); } ;
-
+    }
+    
     var enableCache = ('enableCache' in opts)?opts.enableCache:true ;
     var match = opts.match;
     var sourcemap = opts.sourcemap || false;
@@ -75,77 +76,87 @@ function createHandler(opts) {
         var ua = uaParser(req.headers['user-agent']);
         var key = [req.url, ua.ua.family, ua.ua.major].join('||');
 
-        if (enableCache === true && key in transforms) {
-            res.write(transforms[key]);
+        if (enableCache === true && key in transformed) {
+            res.write(transformed[key]);
             res.end();
-        } else {
-            try {
-                var fileContents = fs.readFileSync(opts.srcDir + req.url);
+            return ;
+        } 
 
-                var transpilers = [] ;
-                var babelPlugins = {} ;
-                var useNodent = null ;
-                opts.features.forEach(feature => {
-                    var test ;
-                    if (aliases[feature])
-                        feature = aliases[feature] ;
-                    if (test = nodentPlugins[feature]) {
-                        useNodent = { promises: true } ;
-                    } else if (features[feature]) {
-                        if (kangaxToBabel[feature] && !features[feature](ua.ua)) {
-                            kangaxToBabel[feature].forEach(function(plugin){
-                                babelPlugins[plugin] = _try(require,ex=>console.error("Feature "+feature+": "+ex))(plugin) ;
-                            }) ;
-                        }
-                    } else console.error("Unknown feature "+feature) ;
-                }) ;
+        try {
+            var transpilers = [] ;
+            var babelPlugins = {} ;
+            var useNodent = null ;
+            opts.features.forEach(feature => {
+                var test ;
+                if (aliases[feature])
+                    feature = aliases[feature] ;
+                if (test = nodentPlugins[feature]) {
+                    useNodent = { promises: true } ;
+                } else if (features[feature]) {
+                    if (kangaxToBabel[feature] && !features[feature](ua.ua)) {
+                        kangaxToBabel[feature].forEach(function(plugin){
+                            babelPlugins[plugin] = _try(require,ex=>console.error("Feature "+feature+": "+ex))(plugin) ;
+                        }) ;
+                    }
+                } else console.error("Unknown feature "+feature) ;
+            }) ;
 
-                if (useNodent) {
-                    useNodent.sourcemap = sourcemap ;
-                    
-                    if (features.esnext_async_functions(ua.ua))
-                        useNodent.engine = true ;
-                    
-                    var nodent = {
-                        compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
-                        method: 'compile',
-                        args: (req,code) => [code, req.url, useNodent],
-                        outputProperty: 'code' } ;
-                    if (!nodent.compiler.version || nodent.compiler.version<"2.6")
-                        console.log("Nodent version should be >=2.6") ;
-                    else
-                        transpilers.push(nodent) ;
-                }
+            var transformKeys = Object.keys(babelPlugins);
 
-                babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
-                if (useNodent && useNodent.engine)
-                    babelPlugins.push(require('babel-plugin-syntax-async-functions')) ;
-                
-                if (babelPlugins.length) {
-                    var babel = require('babel-core');
-                    transpilers.push({
-                        compiler: babel, method: 'transform',
-                        args: (req,code) => [code, { plugins: babelPlugins, compact:false }],
-                        outputProperty: 'code'
-                    }) ;
-                }
+            if (useNodent) {
+                transformKeys.push('nodent') ;
+                useNodent.sourcemap = sourcemap ;
 
-                var result = transpilers.reduce(
-                    (output, transpiler) => {
-                        var args = transpiler.args(req,output);
-                        if (args === false) return output;
-                        var compiler = transpiler.compiler;
-                        return compiler[transpiler.method].apply(compiler, args)[transpiler.outputProperty];
-                    },
-                    fileContents.toString()
-                );
+                if (features.esnext_async_functions(ua.ua))
+                    useNodent.engine = true ;
 
-                if (enableCache === true) transforms[key] = result;
-                res.write(result);
-                res.end();
-            } catch (ex) {
-                res.status(500).send("Error occurred whilst running transforms: "+ex.message+"\n"+ex.stack);
+                var nodent = {
+                    compiler: _try(require,ex=>console.error("Feature "+feature+": "+ex))('nodent')(),
+                    method: 'compile',
+                    args: (req,code) => [code, req.url, useNodent],
+                    outputProperty: 'code' } ;
+                if (!nodent.compiler.version || nodent.compiler.version<"2.6")
+                    console.log("Nodent version should be >=2.6") ;
+                else
+                    transpilers.push(nodent) ;
             }
+            transformKeys = transformKeys.sort().join('|') ;
+            if (transformKeys in transformed) {
+                res.write(transformed[transformKeys]);
+                res.end();
+                return ;
+            } 
+            babelPlugins = Object.keys(babelPlugins).map(key=>babelPlugins[key]).filter(plugin=>!!plugin) ;
+            if (useNodent && useNodent.engine)
+                babelPlugins.push(require('babel-plugin-syntax-async-functions')) ;
+
+            if (babelPlugins.length) {
+                var babel = require('babel-core');
+                transpilers.push({
+                    compiler: babel, method: 'transform',
+                    args: (req,code) => [code, { plugins: babelPlugins, compact:false }],
+                    outputProperty: 'code'
+                }) ;
+            }
+
+            var fileContents = fs.readFileSync(opts.srcDir + req.url);
+            var result = transpilers.reduce(
+                (output, transpiler) => {
+                    var args = transpiler.args(req,output);
+                    if (args === false) return output;
+                    var compiler = transpiler.compiler;
+                    return compiler[transpiler.method].apply(compiler, args)[transpiler.outputProperty];
+                },
+                fileContents.toString()
+            );
+
+            if (enableCache === true) 
+                transformed[key] = transformed[transformKeys] = result;
+
+            res.write(result);
+            res.end();
+        } catch (ex) {
+            res.status(500).send("Error occurred whilst running transforms: "+ex.message+"\n"+ex.stack);
         }
     };
 }

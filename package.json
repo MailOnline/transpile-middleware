@@ -1,6 +1,6 @@
 {
   "name": "transpile-middleware",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {
@@ -35,7 +35,7 @@
       "babel-plugin-transform-es2015-literals": "^6.8.0",
       "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
       "babel-plugin-transform-es2015-template-literals": "^6.8.0",
-      "nodent": "^2.6.0"
+      "nodent": ">2.6.0"
   },
   "repository": {
     "type": "git",
