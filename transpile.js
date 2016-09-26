@@ -120,7 +120,10 @@ function createHandler(opts) {
                 else
                     transpilers.push(nodent) ;
             }
-            transformKeys = transformKeys.sort().join('|') ;
+            
+            transformKeys.push(req.url) ;
+            transformKeys = transformKeys.sort().join('<>') ;
+            
             if (transformKeys in transformed) {
                 res.write(transformed[transformKeys]);
                 res.end();
