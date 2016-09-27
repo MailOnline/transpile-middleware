@@ -45,8 +45,6 @@ var aliases = {
     es6_template_strings:'es6_template_literals'
 };
 
-var transformed = {};
-
 function _try(fn,error) {
     return function(){
         try {
@@ -69,6 +67,11 @@ function createHandler(opts) {
     if (!match) match = /\.js$/;
 
     var uaParser = require('./lib/ua');
+    var transformed = {};
+
+    createHandler.clearCache = function() {
+        transformed = {} ;
+    } ;
 
     return function transformReqHandler(req, res, next) {
         if (!req.url.match(match)) return next();
