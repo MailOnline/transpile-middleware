@@ -69,11 +69,7 @@ function createHandler(opts) {
     var uaParser = require('./lib/ua');
     var transformed = {};
 
-    createHandler.clearCache = function() {
-        transformed = {} ;
-    } ;
-
-    return function transformReqHandler(req, res, next) {
+    var xform = function transformReqHandler(req, res, next) {
         if (!req.url.match(match)) return next();
 
         var ua = uaParser(req.headers['user-agent']);
@@ -165,6 +161,10 @@ function createHandler(opts) {
             res.status(500).send("Error occurred whilst running transforms: "+ex.message+"\n"+ex.stack);
         }
     };
+    xform.clearCache = function() {
+        transformed = {} ;
+    } ;
+    return xform ;
 }
 
 module.exports = {
