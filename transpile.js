@@ -76,6 +76,7 @@ function createHandler(opts) {
         var key = [req.url, ua.ua.family, ua.ua.major].join('||');
 
         if (enableCache === true && key in transformed) {
+            res.setHeader('Content-Type','text/javascript')
             res.write(transformed[key]);
             res.end();
             return ;
@@ -124,6 +125,7 @@ function createHandler(opts) {
             transformKeys = transformKeys.sort().join('<>') ;
             
             if (transformKeys in transformed) {
+                res.setHeader('Content-Type','text/javascript')
                 res.write(transformed[transformKeys]);
                 res.end();
                 return ;
@@ -155,6 +157,7 @@ function createHandler(opts) {
             if (enableCache === true) 
                 transformed[key] = transformed[transformKeys] = result;
 
+            res.setHeader('Content-Type','text/javascript')
             res.write(result);
             res.end();
         } catch (ex) {
