@@ -73,7 +73,7 @@ function createHandler(opts) {
         if (!req.url.match(match)) return next();
 
         var ua = uaParser(req.headers['user-agent']);
-        var key = [req.url, ua.ua.family, ua.ua.major].join('||');
+        var key = [req.url, "*", ua.ua.family, ua.ua.major].join('<>');
 
         if (enableCache === true && key in transformed) {
             res.setHeader('Content-Type','text/javascript')
@@ -121,8 +121,7 @@ function createHandler(opts) {
                     transpilers.push(nodent) ;
             }
             
-            transformKeys.push(req.url) ;
-            transformKeys = transformKeys.sort().join('<>') ;
+            transformKeys = req.url+"<>!"+transformKeys.sort().join('<>') ;
             
             if (transformKeys in transformed) {
                 res.setHeader('Content-Type','text/javascript')
@@ -164,8 +163,16 @@ function createHandler(opts) {
             res.status(500).send("Error occurred whilst running transforms: "+ex.message+"\n"+ex.stack);
         }
     };
-    xform.clearCache = function() {
-        transformed = {} ;
+    xform.clearCache = function(url) {
+        if (url) {
+            url += "<>" ;
+            Object.keys(transformed).forEach(function(k){
+                if (k.slice(0,url.length-1)===url)
+                    delete transformed[k] ;
+            }) ;
+        } else {
+            transformed = {} ;
+        }
     } ;
     return xform ;
 }
