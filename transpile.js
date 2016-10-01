@@ -167,7 +167,7 @@ function createHandler(opts) {
         if (url) {
             url += "<>" ;
             Object.keys(transformed).forEach(function(k){
-                if (k.slice(0,url.length-1)===url)
+                if (k.slice(0,url.length)===url)
                     delete transformed[k] ;
             }) ;
         } else {
