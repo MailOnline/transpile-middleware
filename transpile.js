@@ -19,11 +19,29 @@ function makeTest(test){
 
 var kangax = require('./build/compat.json') ;
 
-kangax.es6.tests.forEach(function(test) { return features["es6_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
-kangax.esnext.tests.forEach(function(test) { return features["esnext_"+test.name.replace(/\W+/g,"_")] = makeTest(test)}) ;
+Object.keys(kangax).forEach(function(revision){
+    kangax[revision].tests.forEach(function(test) {
+        var name = test.name.replace(/\W+/g,"_") ;
+        var testFunc = makeTest(test) ;
+        if (features[name]) {
+            console.warn("transpile-middleware: Warning - duplicate feature '"+name+"' in "+revision+" renamed to "+revision+"_"+name) ;
+        } else {
+            features[name] = testFunc;
+        }
+        features[revision+"_"+name] = testFunc;
+    }) ;
+}) ;
 
 //Map babel transforms to kangax names
 var kangaxToBabel = {
+    arrow_functions:['babel-plugin-transform-es2015-arrow-functions'],
+    'const':['babel-plugin-transform-es2015-block-scoping'],
+    'let':['babel-plugin-transform-es2015-block-scoping'],
+    object_literal_extensions:['babel-plugin-transform-es2015-computed-properties','babel-plugin-transform-es2015-literals','babel-plugin-transform-es2015-shorthand-properties'],
+    template_literals:['babel-plugin-transform-es2015-template-literals'],
+    destructuring_declarations:['babel-plugin-transform-es2015-destructuring'],
+    destructuring_assignment:['babel-plugin-transform-es2015-destructuring'],
+    destructuring_parameters:['babel-plugin-transform-es2015-destructuring'],
     es6_arrow_functions:['babel-plugin-transform-es2015-arrow-functions'],
     es6_const:['babel-plugin-transform-es2015-block-scoping'],
     es6_let:['babel-plugin-transform-es2015-block-scoping'],
@@ -42,7 +60,8 @@ var nodentPlugins = {
 } ;
 
 var aliases = {
-    es6_template_strings:'es6_template_literals'
+    es6_template_strings:'template_literals',
+    template_strings:'template_literals'
 };
 
 function _try(fn,error) {
@@ -107,7 +126,7 @@ function createHandler(opts) {
                 transformKeys.push('nodent') ;
                 useNodent.sourcemap = sourcemap ;
 
-                if (features.esnext_async_functions(ua.ua))
+                if (features.async_functions(ua.ua))
                     useNodent.engine = true ;
 
                 var nodent = {

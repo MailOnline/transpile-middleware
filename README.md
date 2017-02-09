@@ -29,7 +29,7 @@ In your Node server:
 
 		app.use(require('transpile-middleware').createHandler({
 		    // The features used by this app
-		    features: ['es6_let','es6_const','es6_arrow_functions','async_return','async_throw','await_anywhere'],
+		    features: ['let','const','arrow_functions','async_return','async_throw','await_anywhere'],
 		    // Location of the js files
             srcDir: __dirname + '/www',
             match: /^\/js\/[^\/]+\.js$/, // Match everything is /js/xxx.js, but NOT subdirs like /js/vendor/xxx.js
@@ -50,15 +50,15 @@ features
 --------
 An array of features used by your app. Valid values (derived from the Kangax ES6/7/Next compatibility tables) are:
 
-	es6_const
-	es6_let
-	es6_arrow_functions
-	es6_object_literal_extensions (since v0.9.1)
-	es6_template_strings (since v0.9.1)
-	es6_template_literals (since v0.9.5)
-	es6_destructuring_declarations (since v0.9.2)
-	es6_destructuring_assignment (since v0.9.2)
-	es6_destructuring_parameters (since v0.9.2)
+	const
+	let
+	arrow_functions
+	object_literal_extensions (since v0.9.1)
+	template_strings (since v0.9.1)
+	template_literals (since v0.9.5)
+	destructuring_declarations (since v0.9.2)
+	destructuring_assignment (since v0.9.2)
+	destructuring_parameters (since v0.9.2)
 	async_functions (invokes Nodent)
 	async_return (invokes Nodent)
 	async_throw (invokes Nodent)
@@ -67,92 +67,92 @@ An array of features used by your app. Valid values (derived from the Kangax ES6
 
 The following values are valid, but not implemented in v0.9 (requires babel support for each feature)
 
-	es6_proper_tail_calls_tail_call_optimisation_
-	es6_default_function_parameters
-	es6_rest_parameters
-	es6_spread_operator
-	es6_for_of_loops
-	es6_octal_and_binary_literals
-	es6_RegExp_y_and_u_flags
-	es6_Unicode_code_point_escapes
-	es6_new_target
-	es6_block_level_function_declaration
-	es6_class
-	es6_super
-	es6_generators
-	es6_typed_arrays
-	es6_Map
-	es6_Set
-	es6_WeakMap
-	es6_WeakSet
-	es6_Proxy
-	es6_Reflect
-	es6_Promise
-	es6_Symbol
-	es6_well_known_symbols
-	es6_Object_static_methods
-	es6_function_name_property
-	es6_String_static_methods
-	es6_String_prototype_methods
-	es6_RegExp_prototype_properties
-	es6_Array_static_methods
-	es6_Array_prototype_methods
-	es6_Number_properties
-	es6_Math_methods
-	es6_Array_is_subclassable
-	es6_RegExp_is_subclassable
-	es6_Function_is_subclassable
-	es6_Promise_is_subclassable
-	es6_miscellaneous_subclassables
-	es6_prototype_of_bound_functions
-	es6_Proxy_internal_get_calls
-	es6_Proxy_internal_set_calls
-	es6_Proxy_internal_defineProperty_calls
-	es6_Proxy_internal_deleteProperty_calls
-	es6_Proxy_internal_getOwnPropertyDescriptor_calls
-	es6_Proxy_internal_ownKeys_calls
-	es6_Object_static_methods_accept_primitives
-	es6_own_property_order
-	es6_miscellaneous
-	es6_non_strict_function_semantics
-	es6___proto___in_object_literals
-	es6_Object_prototype___proto__
-	es6_String_prototype_HTML_methods
-	es6_RegExp_prototype_compile
-	es6_RegExp_syntax_extensions
-	es6_HTML_style_comments
-	esnext_exponentiation_operator
-	esnext_Array_prototype_includes
-	esnext_generator_functions_can_t_be_used_with_new_
-	esnext_strict_fn_w_non_strict_non_simple_params_is_error
-	esnext_nested_rest_destructuring_declarations
-	esnext_nested_rest_destructuring_parameters
-	esnext_Proxy_enumerate_handler_removed
-	esnext_Proxy_internal_calls_Array_prototype_includes
-	esnext_Object_values
-	esnext_Object_entries
-	esnext_trailing_commas_in_function_syntax
-	esnext_async_functions
-	esnext_Object_getOwnPropertyDescriptors
-	esnext_SIMD_Single_Instruction_Multiple_Data_
-	esnext_String_padding
-	esnext_function_sent
-	esnext_object_rest_properties
-	esnext_object_spread_properties
-	esnext_ArrayBuffer_transfer
-	esnext_class_decorators
-	esnext_class_properties
-	esnext_String_trimming
-	esnext_System_global
-	esnext_Observable
-	esnext_bind_operator
-	esnext_do_expression
-	esnext_Map_prototype_toJSON
-	esnext_Set_prototype_toJSON
-	esnext_String_prototype_at
-	esnext_Error_isError
-	esnext_Math_methods_for_64_bit_integers
-	esnext_Reflect_Realm
+	proper_tail_calls_tail_call_optimisation_
+	default_function_parameters
+	rest_parameters
+	spread_operator
+	for_of_loops
+	octal_and_binary_literals
+	RegExp_y_and_u_flags
+	Unicode_code_point_escapes
+	new_target
+	block_level_function_declaration
+	class
+	super
+	generators
+	typed_arrays
+	Map
+	Set
+	WeakMap
+	WeakSet
+	Proxy
+	Reflect
+	Promise
+	Symbol
+	well_known_symbols
+	Object_static_methods
+	function_name_property
+	String_static_methods
+	String_prototype_methods
+	RegExp_prototype_properties
+	Array_static_methods
+	Array_prototype_methods
+	Number_properties
+	Math_methods
+	Array_is_subclassable
+	RegExp_is_subclassable
+	Function_is_subclassable
+	Promise_is_subclassable
+	miscellaneous_subclassables
+	prototype_of_bound_functions
+	Proxy_internal_get_calls
+	Proxy_internal_set_calls
+	Proxy_internal_defineProperty_calls
+	Proxy_internal_deleteProperty_calls
+	Proxy_internal_getOwnPropertyDescriptor_calls
+	Proxy_internal_ownKeys_calls
+	Object_static_methods_accept_primitives
+	own_property_order
+	miscellaneous
+	non_strict_function_semantics
+	__proto___in_object_literals
+	Object_prototype___proto__
+	String_prototype_HTML_methods
+	RegExp_prototype_compile
+	RegExp_syntax_extensions
+	HTML_style_comments
+	exponentiation_operator
+	Array_prototype_includes
+	generator_functions_can_t_be_used_with_new_
+	strict_fn_w_non_strict_non_simple_params_is_error
+	nested_rest_destructuring_declarations
+	nested_rest_destructuring_parameters
+	Proxy_enumerate_handler_removed
+	Proxy_internal_calls_Array_prototype_includes
+	Object_values
+	Object_entries
+	trailing_commas_in_function_syntax
+	async_functions
+	Object_getOwnPropertyDescriptors
+	SIMD_Single_Instruction_Multiple_Data_
+	String_padding
+	function_sent
+	object_rest_properties
+	object_spread_properties
+	ArrayBuffer_transfer
+	class_decorators
+	class_properties
+	String_trimming
+	System_global
+	Observable
+	bind_operator
+	do_expression
+	Map_prototype_toJSON
+	Set_prototype_toJSON
+	String_prototype_at
+	Error_isError
+	Math_methods_for_64_bit_integers
+	Reflect_Realm
 
 Updating
 ========
@@ -169,4 +169,4 @@ You can force an update to the User Agent database using
 
 	npm run update-all
 	
-Updating these components installs and builds quite a lot of dependancies which are installed on demand.
+Updating these components installs and builds quite a lot of dependencies which are installed on demand.

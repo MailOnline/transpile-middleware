@@ -1,11 +1,11 @@
 {
   "name": "transpile-middleware",
-  "version": "0.9.15",
+  "version": "0.10.0",
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {
     "test": "node test",
-    "update-kangax": "cd build ; npm i ; cd .. ; node build",
+    "update-kangax": "cd build ; npm i git+https://github.com/kangax/compat-table.git#gh-pages ; cd .. ; node build",
     "update-ua": "npm i git+https://github.com/ua-parser/uap-core.git",
     "update-all": "npm run update-kangax ; npm run update-ua"
   },
