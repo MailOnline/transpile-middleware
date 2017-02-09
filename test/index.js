@@ -32,6 +32,9 @@ var res = {
     },
     status:function(x){
         return res ;
+    },
+    setHeader:function(x){
+        return res ;
     }
 } ;
 
@@ -54,7 +57,7 @@ function testUserAgent(id,uas) {
     }
 }
 
-testUserAgent('edge14', 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/14.10136') ;
+testUserAgent('chrome56', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2623.87 Safari/537.36') ;
 testUserAgent('chrome50', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2623.87 Safari/537.36') ;
 testUserAgent('chrome1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1.0.2623.87 Safari/537.36') ;
 

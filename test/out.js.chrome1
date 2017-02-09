@@ -11,10 +11,9 @@ function test() {
         };
     };
 
-    var _x = x();
-
-    var a = _x.a;
-    var b = _x.b;
+    var _x = x(),
+        a = _x.a,
+        b = _x.b;
 
     console.log('' + (a + b));
     var q = _defineProperty({

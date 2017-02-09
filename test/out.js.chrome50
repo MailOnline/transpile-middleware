@@ -7,10 +7,10 @@ function test() {
 
     var _x = x();
 
-    let a = _x.a;
-    let b = _x.b;
+    let a = _x.a,
+        b = _x.b;
 
-    console.log(`${ a + b }`);
+    console.log(`${a + b}`);
     const q = {
         a,
         [b]: 'bb'
@@ -21,11 +21,9 @@ function test() {
 function atest() {
     return new Promise(function ($return, $error) {
         var a;
-        a = () => {
-            return new Promise(function ($return, $error) {
-                return $return(2);
-            }.$asyncbind(this));
-        };
+        a = () => new Promise(function ($return, $error) {
+            return $return(2);
+        }.$asyncbind(this));
         return a().then($return, $error);
     }.$asyncbind(this));
 }
