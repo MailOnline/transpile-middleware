@@ -4,12 +4,12 @@
   "description": "Utility to build JSON compat-tables from kangax/compat-table",
   "main": "index.js",
   "scripts": {
-    "install":"node build",
+    "install": "node build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependances":{
-      "compat-table":"git+https://github.com/kangax/compat-table.git#gh-pages"
-  },
   "author": "matAtBread",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "compat-table": "git+https://github.com/kangax/compat-table.git#gh-pages"
+  }
 }

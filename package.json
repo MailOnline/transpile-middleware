@@ -1,6 +1,6 @@
 {
   "name": "transpile-middleware",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Read and transpile JS code on-the-fly for browsers",
   "main": "transpile.js",
   "scripts": {
@@ -27,15 +27,15 @@
     "yamlparser": "0.0.2"
   },
   "devDependencies": {
-      "babel-plugin-syntax-async-functions": "^6.8.0",
-      "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
-      "babel-plugin-transform-es2015-block-scoping": "^6.10.1",
-      "babel-plugin-transform-es2015-computed-properties": "^6.8.0",
-      "babel-plugin-transform-es2015-destructuring": "^6.9.0",
-      "babel-plugin-transform-es2015-literals": "^6.8.0",
-      "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
-      "babel-plugin-transform-es2015-template-literals": "^6.8.0",
-      "nodent": ">=2.6.9"
+    "babel-plugin-syntax-async-functions": "^6.8.0",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.10.1",
+    "babel-plugin-transform-es2015-computed-properties": "^6.8.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "babel-plugin-transform-es2015-literals": "^6.8.0",
+    "babel-plugin-transform-es2015-shorthand-properties": "^6.8.0",
+    "babel-plugin-transform-es2015-template-literals": "^6.8.0",
+    "nodent": ">=2.6.9"
   },
   "repository": {
     "type": "git",
