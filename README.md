@@ -1,6 +1,8 @@
 transpile-middleware
 ============
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/MailOnline/transpile-middleware.svg)](https://greenkeeper.io/)
+
 Connect/Express middleware to do a minimal transpilation to meet the requirements of a browser.
 
 Installation
