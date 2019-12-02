@@ -21,7 +21,7 @@
   "dependencies": {
     "babel-core": "^6.10.4",
     "object.assign": "^4.0.4",
-    "resolve": "^1.1.7",
+    "resolve": "^1.12.2",
     "uap-core": "git+https://github.com/ua-parser/uap-core.git",
     "uap-ref-impl": "^0.2.0",
     "yamlparser": "0.0.2"
