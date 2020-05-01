@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "install": "node build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "matAtBread",
   "license": "MIT",
   "dependencies": {
-    "compat-table": "git+https://github.com/kangax/compat-table.git#gh-pages"
-  }
+    "compat-table": "git+https://github.com/kangax/compat-table.git#gh-pages",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
