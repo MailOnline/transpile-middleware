@@ -1,0 +1,39 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.21.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - babel-plugin-transform-es2015-block-scoping > babel-traverse > debug:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-template > babel-traverse > debug:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-computed-properties > babel-template > babel-traverse > debug:
+        patched: '2021-08-04T19:01:49.839Z'
+  SNYK-JS-LODASH-567746:
+    - babel-plugin-transform-es2015-block-scoping > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-shorthand-properties > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-traverse > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-template > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-computed-properties > babel-template > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-traverse > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-template > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-computed-properties > babel-template > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-template > babel-traverse > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-computed-properties > babel-template > babel-traverse > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-block-scoping > babel-template > babel-traverse > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
+    - babel-plugin-transform-es2015-computed-properties > babel-template > babel-traverse > babel-types > lodash:
+        patched: '2021-08-04T19:01:49.839Z'
